@@ -1,0 +1,5 @@
+.dataTables_length,
+.dataTables_info,
+.dataTables_filter {
+  display: none;
+}

@@ -1,0 +1,248 @@
+<?php require_once('vendor/autoload.php');
+require_once('Cbrs.php');
+
+session_start();
+
+if (!isset($_SESSION['user_name'])) {
+    header('location:../../login/login_form');
+}
+
+$dsn = 'mysql:host=127.0.0.1;dbname=buku';
+$user = 'root';
+$password = '';
+$database = new Nette\Database\Connection($dsn, $user, $password);
+
+$result = $database->query('SELECT buku.*, kategori.kategori_nama, penerbit.nama_penerbit
+    FROM buku
+    JOIN kategori ON buku.kategori_id = kategori.kategori_id
+    JOIN penerbit ON buku.id_penerbit = penerbit.id_penerbit ORDER BY RAND()');
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>E-Library SMAM 8</title>
+    <link rel="website icon" type="png" href="../../img/logo.png">
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/datatables_hide.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="vendor/datatables/jquery-3.5.1.js" rel="stylesheet">
+    <link href="vendor/datatables/jquery.dataTables.min.js" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <a class="navbar-brand" href="siswa_page.php">
+                        <h1 class=" h4 mb-0 text-gray-800">E-Library SMAM 8</h1>
+                    </a>
+
+                    <!-- Topbar Search -->
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" onsubmit="return false;">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Cari buku apaa..??" id="cari1" autocomplete="off">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="cari" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search" onsubmit="return false;">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Cari buku apaa..??" id="cari2" autocomplete="off">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['user_name'] ?></span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+                <!-- Logout Modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Logout</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Apakah anda yakin ingin logout?</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="button" data-dismiss="modal">Batal</button>
+                                <a class="btn btn-danger" href="../login/logout.php">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class=" container-fluid">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Haii <?= $_SESSION['user_name'] ?>, </h6>
+                            <h6 class="m-0 font-weight-bold text-primary mt-1">Yuk lihat buku pilihan hari ini</h6>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataSiswa" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Cover</th>
+                                            <th>Judul Buku</th>
+                                            <th>Kategori</th>
+                                            <th>Penulis</th>
+                                            <th>Jenis Buku</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $no = 1 ?>
+                                        <?php foreach ($result as $row) : ?>
+                                            <tr>
+                                                <td><img src="../superadmin/modul_buku/cover/<?php echo $row->buku_cover ?>" class="img-thumbnail"></td>
+                                                <td><a href="detail_buku.php?id=<?php echo $row->buku_id ?>"><?php echo $row->buku_judul ?></a></td>
+                                                <td><?php echo $row->kategori_nama ?></td>
+                                                <td><?php echo $row->penulis ?></td>
+                                                <td><?php echo $row->buku_jenis ?></td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- footer -->
+    <?php
+    @include 'assets/footer.php'
+    ?>
+    <!-- End of Footer -->
+
+    <!-- Datatables JavaScript-->
+    <script src="assets/DataTables/jquery-3.5.1.js"></script>
+    <script src="assets/DataTables/jquery.dataTables.min.js"></script>
+    <script src="assets/DataTables/dataTables.bootstrap5.min.js"></script>
+
+    <!-- DataTable JS-->
+    <script>
+        oTable = $('#dataSiswa').DataTable();
+
+        $('#cari1').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+
+        $('#cari2').keyup(function() {
+            oTable.search($(this).val()).draw();
+        })
+    </script>
+
+    <script>
+        document.querySelector('form').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- DataTable plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+</body>
+
+</html>

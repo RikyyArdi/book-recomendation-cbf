@@ -1,8 +1,8 @@
 ## Deskripsi
 
-Sistem Rekomendasi buku menggunakan metode Content-based filtering merupakan sistem yang dapat memberikan rekomendasi buku berdasarkan perhitungan TF-IDF dan Cosine Similarity. Sistem ini menggunakan bahasa pemrograman PHP Native.
+Sistem Rekomendasi buku menggunakan metode Content-based filtering merupakan sistem yang dapat memberikan rekomendasi buku berdasarkan perhitungan TF-IDF dan Cosine Similarity. Sistem ini menggunakan bahasa pemrograman PHP Native. sistem ini cocok untuk kalian yang sedang mencari referensi untuk tugas akhir.
 
-## DONASI : <a href="https://saweria.co/fauzan1892">https://saweria.co/fauzan1892</a>
+## DONASI : <a href="https://saweria.co/RikyyArdii">Klik Disini</a>
 
 ## Plugin yang digunakan
 
@@ -30,4 +30,5 @@ Password : 12345
 Username : siswa
 <br/>
 Password : 12345
+
 # book-recomendation-cbf
